@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Valentine 💖</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial;
+      background: pink;
+      padding-top: 100px;
+    }
+    #no {
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 id="name"></h1>
+  <h2>Will you be my Valentine? 💍❤️</h2>
+
+  <button onclick="yes()">YES 😍</button>
+  <button id="no" onmouseover="moveNo()">NO 😝</button>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get("name") || "Hey";
+
+    document.getElementById("name").innerText =
+      name + ", I have something for you 💌";
+
+    function moveNo() {
+      const btn = document.getElementById("no");
+      btn.style.left = Math.random() * window.innerWidth + "px";
+      btn.style.top = Math.random() * window.innerHeight + "px";
+    }
+
+    function yes() {
+      alert("Yayyy! 💖 Love you 😘");
+    }
+  </script>
+</body>
+</html>
