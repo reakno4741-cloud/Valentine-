@@ -247,26 +247,31 @@ yesBtn.addEventListener('click', () => {
 
 /* Mobile-safe No movement */
 function moveNoButton() {
-  const padding = 10;
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
+
+  const padding = 15;
+
+  // Use visible viewport (mobile safe)
+  const viewportWidth = document.documentElement.clientWidth;
+  const viewportHeight = document.documentElement.clientHeight;
 
   const btnWidth = noBtn.offsetWidth;
   const btnHeight = noBtn.offsetHeight;
 
-  const maxX = screenWidth - btnWidth - padding;
-  const maxY = screenHeight - btnHeight - padding;
+  // Safe boundaries
+  const maxX = viewportWidth - btnWidth - padding;
+  const maxY = viewportHeight - btnHeight - padding;
 
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
+  // Clamp values so it NEVER goes outside
+  const randomX = Math.floor(Math.random() * maxX);
+  const randomY = Math.floor(Math.random() * maxY);
 
-  noBtn.style.position = 'fixed';
-  noBtn.style.left = randomX + 'px';
-  noBtn.style.top = randomY + 'px';
-  noBtn.style.zIndex = '9999';
+  noBtn.style.position = "fixed";
+  noBtn.style.left = randomX + "px";
+  noBtn.style.top = randomY + "px";
+  noBtn.style.zIndex = "9999";
 }
 
-noBtn.addEventListener('click', function(e) {
+noBtn.addEventListener("click", function(e) {
   e.preventDefault();
   moveNoButton();
 });
