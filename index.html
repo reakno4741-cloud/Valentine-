@@ -167,7 +167,7 @@
     }
 
     #noBtn {
-      transition: 0.1s ease;
+      transition: 0.15s ease;
     }
   </style>
 </head>
@@ -198,68 +198,82 @@
         <div class="love-line">
           You're my everything now ♡
         </div>
-
       </div>
     </div>
   </div>
 
-  <script>
-    const floatLayer = document.getElementById('floatLayer');
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const askMode = document.getElementById('askMode');
-    const yesMode = document.getElementById('yesMode');
-    const valentineText = document.getElementById('valentineText');
+<script>
+const floatLayer = document.getElementById('floatLayer');
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const askMode = document.getElementById('askMode');
+const yesMode = document.getElementById('yesMode');
+const valentineText = document.getElementById('valentineText');
 
-    const FLOATIES = ['💖', '🌹', '🧸', '💝', '💗', '✨', '💕'];
+const FLOATIES = ['💖', '🌹', '🧸', '💝', '💗', '✨', '💕'];
 
-    const pathParts = window.location.pathname.split('/').filter(Boolean);
-    const nameFromUrl = pathParts[pathParts.length - 1];
+/* URL name logic */
+const pathParts = window.location.pathname.split('/').filter(Boolean);
+const nameFromUrl = pathParts[pathParts.length - 1];
 
-    if (nameFromUrl) {
-      const formattedName = decodeURIComponent(nameFromUrl);
-      valentineText.innerText = `Hey ${formattedName} will you be my valentine?`;
-    }
+if (nameFromUrl) {
+  const formattedName = decodeURIComponent(nameFromUrl);
+  valentineText.innerText = `Hey ${formattedName} will you be my valentine?`;
+}
 
-    function spawnFloaties() {
-      for (let i = 0; i < 40; i++) {
-        const el = document.createElement('div');
-        el.className = 'float';
-        el.textContent = FLOATIES[Math.floor(Math.random() * FLOATIES.length)];
-        el.style.left = Math.random() * 100 + '%';
-        el.style.setProperty('--dur', (Math.random() * 4 + 4) + 's');
-        el.style.setProperty('--tx', (Math.random() * 100 - 50) + 'px');
-        el.style.animationDelay = (Math.random() * 8) + 's';
-        floatLayer.appendChild(el);
-      }
-    }
+/* Floating hearts */
+function spawnFloaties() {
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.className = 'float';
+    el.textContent = FLOATIES[Math.floor(Math.random() * FLOATIES.length)];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.setProperty('--dur', (Math.random() * 4 + 4) + 's');
+    el.style.setProperty('--tx', (Math.random() * 100 - 50) + 'px');
+    el.style.animationDelay = (Math.random() * 8) + 's';
+    floatLayer.appendChild(el);
+  }
+}
 
-    yesBtn.addEventListener('click', () => {
-      askMode.style.display = 'none';
-      yesMode.style.display = 'block';
+/* Yes button */
+yesBtn.addEventListener('click', () => {
+  askMode.style.display = 'none';
+  yesMode.style.display = 'block';
 
-      const audio = new Audio("https://reakno4741-cloud.github.io/Valentine-/Ishq_Wala_Love.mp3");
-      audio.play().catch(() => {});
-    });
+  const audio = new Audio("https://reakno4741-cloud.github.io/Valentine-/Ishq_Wala_Love.mp3");
+  audio.play().catch(() => {});
+});
 
-    function moveNoButton() {
-      const padding = 20;
-      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding * 2) + padding;
-      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding * 2) + padding;
+/* Mobile-safe No button movement */
+function moveNoButton() {
+  const padding = 10;
 
-      noBtn.style.position = 'fixed';
-      noBtn.style.left = x + 'px';
-      noBtn.style.top = y + 'px';
-      noBtn.style.zIndex = '9999';
-    }
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
 
-    /* ✅ MOVES ONLY ON CLICK */
-    noBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      moveNoButton();
-    });
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
 
-    spawnFloaties();
-  </script>
+  const maxX = screenWidth - btnWidth - padding;
+  const maxY = screenHeight - btnHeight - padding;
+
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
+
+  noBtn.style.position = 'fixed';
+  noBtn.style.left = randomX + 'px';
+  noBtn.style.top = randomY + 'px';
+  noBtn.style.zIndex = '9999';
+}
+
+/* Move only on click */
+noBtn.addEventListener('click', function(e) {
+  e.preventDefault();
+  moveNoButton();
+});
+
+spawnFloaties();
+</script>
+
 </body>
 </html>
