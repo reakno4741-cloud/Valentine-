@@ -19,52 +19,29 @@ html,body{
   height:100%;
   width:100%;
   overflow:hidden;
+  margin:0;
+  font-family:"Plus Jakarta Sans", system-ui, sans-serif;
 }
 
 body{
-  margin:0;
-  color:var(--ink);
-  font-family:"Plus Jakarta Sans", system-ui, sans-serif;
-  background:linear-gradient(180deg,#ff4d6d 0%,#c9184a 100%);
   display:flex;
   align-items:center;
   justify-content:center;
+  color:var(--ink);
 }
 
-/* ================= ROMANTIC BACKGROUND ================= */
-
-.romantic-bg{
-  position:absolute;
+/* ================= BACKGROUND GIF ================= */
+.background-gif{
+  position:fixed;
   inset:0;
   z-index:0;
-  overflow:hidden;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter: brightness(0.7);
 }
 
-.bg-gif{
-  position:absolute;
-  width:320px;
-  opacity:0.28;
-  filter:blur(1.5px);
-  animation:floatSoft 25s linear infinite;
-}
-
-/* Cute anime rain */
-.gif1{ top:0%; left:0%; }
-
-/* Teddy hug */
-.gif2{ bottom:5%; right:5%; animation-delay:6s; }
-
-/* Romantic couple silhouette */
-.gif3{ top:40%; left:35%; animation-delay:12s; }
-
-@keyframes floatSoft{
-  0%{ transform:translateY(0px) scale(1); }
-  50%{ transform:translateY(-40px) scale(1.05); }
-  100%{ transform:translateY(0px) scale(1); }
-}
-
-/* ================= FLOATING EMOJIS (TOP → DOWN) ================= */
-
+/* ================= FLOATING EMOJIS ================= */
 .float-layer{
   pointer-events:none;
   position:absolute;
@@ -93,7 +70,6 @@ body{
 }
 
 /* ================= CARD ================= */
-
 .scene{
   position:relative;
   height:100%;
@@ -102,6 +78,7 @@ body{
   align-items:center;
   justify-content:center;
   padding:16px;
+  z-index:2;
 }
 
 .card{
@@ -207,18 +184,13 @@ h1{
 
 <div class="scene">
 
-  <!-- Romantic Background GIFs -->
-  <div class="romantic-bg">
-    <!-- Anime Rain Couple -->
-    <img src="https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif" class="bg-gif gif1">
-    <!-- Teddy Hug -->
-    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" class="bg-gif gif2">
-    <!-- Romantic Silhouette -->
-    <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" class="bg-gif gif3">
-  </div>
+  <!-- BACKGROUND GIF -->
+  <img class="background-gif" src="https://media.giphy.com/media/rT7WPCciy8oETxLmUV/giphy.gif" alt="Romantic Background">
 
+  <!-- FLOATING EMOJIS -->
   <div class="float-layer" id="floatLayer"></div>
 
+  <!-- MAIN CARD -->
   <div class="card" id="card">
     <div id="askMode">
       <h1 id="valentineText">Will you be my valentine?</h1>
@@ -231,7 +203,7 @@ h1{
     <div class="yes-mode" id="yesMode">
       <h1>Yayyy! I Love You! ❤️</h1>
       <div class="meme-container">
-        <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif">
+        <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Love Meme">
       </div>
       <div class="love-line">
         You're my everything now ♡
@@ -242,9 +214,7 @@ h1{
 </div>
 
 <script>
-
-/* ===== YOUR ORIGINAL MUSIC SYSTEM KEPT ===== */
-
+/* ===== ORIGINAL MUSIC & FLOATIES SYSTEM KEPT ===== */
 const noSounds = [
 "https://reakno4741-cloud.github.io/Valentine-/nooo.mp3",
 "https://reakno4741-cloud.github.io/Valentine-/achaji.mp3",
@@ -258,15 +228,23 @@ const noSounds = [
 let currentNoAudio = null;
 let currentSoundIndex = 0;
 
-const floatLayer=document.getElementById('floatLayer');
-const yesBtn=document.getElementById('yesBtn');
-const noBtn=document.getElementById('noBtn');
-const card=document.getElementById('card');
-const askMode=document.getElementById('askMode');
-const yesMode=document.getElementById('yesMode');
-const valentineText=document.getElementById('valentineText');
+const floatLayer = document.getElementById('floatLayer');
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const card = document.getElementById('card');
+const askMode = document.getElementById('askMode');
+const yesMode = document.getElementById('yesMode');
+const valentineText = document.getElementById('valentineText');
 
-const FLOATIES=['💖','🌹','🧸','💝','💗','✨','💕'];
+const FLOATIES = ['💖','🌹','🧸','💝','💗','✨','💕'];
+
+const params = new URLSearchParams(window.location.search);
+const nameFromUrl = params.get("name");
+if(nameFromUrl){
+ const formattedName = decodeURIComponent(nameFromUrl);
+ const finalName = formattedName.charAt(0).toUpperCase()+formattedName.slice(1);
+ valentineText.innerText=`Hey ${finalName}, will you be my valentine?`;
+}
 
 function spawnFloaties(){
  for(let i=0;i<40;i++){
@@ -281,49 +259,50 @@ function spawnFloaties(){
  }
 }
 
-function stopCurrentNoSound(){
- if(currentNoAudio){
-   currentNoAudio.pause();
-   currentNoAudio.currentTime=0;
-   currentNoAudio=null;
- }
-}
-
 yesBtn.onclick=()=>{
- stopCurrentNoSound();
- askMode.style.display='none';
- yesMode.style.display='block';
+   stopCurrentNoSound();
+   askMode.style.display='none';
+   yesMode.style.display='block';
 
- const audio=new Audio("https://reakno4741-cloud.github.io/Valentine-/Ishq_Wala_Love.mp3");
- audio.play().catch(()=>{});
+   const audio=new Audio("https://reakno4741-cloud.github.io/Valentine-/Ishq_Wala_Love.mp3");
+   audio.play().catch(()=>{});
+
+   // Simple confirmation popup
+   alert("You said YES! 💖");
 };
 
 function moveNoButton(){
- const cardRect=card.getBoundingClientRect();
- const btnWidth=noBtn.offsetWidth;
- const btnHeight=noBtn.offsetHeight;
- const maxX=cardRect.width-btnWidth-10;
- const maxY=cardRect.height-btnHeight-10;
+ const cardRect = card.getBoundingClientRect();
+ const btnWidth = noBtn.offsetWidth;
+ const btnHeight = noBtn.offsetHeight;
+ const maxX = cardRect.width - btnWidth - 10;
+ const maxY = cardRect.height - btnHeight - 10;
  noBtn.style.position="absolute";
  noBtn.style.left=Math.random()*maxX+"px";
  noBtn.style.top=Math.random()*maxY+"px";
+}
+
+function stopCurrentNoSound() {
+  if (currentNoAudio) {
+    currentNoAudio.pause();
+    currentNoAudio.currentTime = 0;
+    currentNoAudio = null;
+  }
 }
 
 noBtn.onclick=(e)=>{
  e.preventDefault();
  stopCurrentNoSound();
 
- const soundUrl=noSounds[currentSoundIndex];
- currentNoAudio=new Audio(soundUrl);
+ const soundUrl = noSounds[currentSoundIndex];
+ currentNoAudio = new Audio(soundUrl);
  currentNoAudio.play().catch(()=>{});
- currentSoundIndex=(currentSoundIndex+1)%noSounds.length;
 
+ currentSoundIndex = (currentSoundIndex + 1) % noSounds.length;
  moveNoButton();
 };
 
 spawnFloaties();
-
 </script>
-
 </body>
 </html>
