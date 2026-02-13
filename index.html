@@ -213,12 +213,11 @@
 
     const FLOATIES = ['💖', '🌹', '🧸', '💝', '💗', '✨', '💕'];
 
-    // 🔥 NEW: Get name from query string (?name=Sneha)
-    const params = new URLSearchParams(window.location.search);
-    const name = params.get("name");
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const nameFromUrl = pathParts[pathParts.length - 1];
 
-    if (name) {
-      const formattedName = decodeURIComponent(name);
+    if (nameFromUrl) {
+      const formattedName = decodeURIComponent(nameFromUrl);
       valentineText.innerText = `Hey ${formattedName} will you be my valentine?`;
     }
 
@@ -254,13 +253,7 @@
       noBtn.style.zIndex = '9999';
     }
 
-    noBtn.addEventListener('mouseover', moveNoButton);
-
-    noBtn.addEventListener('touchstart', function(e) {
-      e.preventDefault();
-      moveNoButton();
-    }, { passive: false });
-
+    /* ✅ MOVES ONLY ON CLICK */
     noBtn.addEventListener('click', function(e) {
       e.preventDefault();
       moveNoButton();
