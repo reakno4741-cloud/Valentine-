@@ -205,11 +205,15 @@
 
 <script>
 const noSounds = [
-"https://reakno4741-cloud.github.io/Valentine-/sadmeow.mp3",
-"https://reakno4741-cloud.github.io/Valentine-/Khatam.mp3",
-"https://reakno4741-cloud.github.io/Valentine-/emotional.mp3",
-"https://reakno4741-cloud.github.io/Valentine-/achaji.mp3"
+"https://reakno4741-cloud.github.io/Valentine-/achaji.mp3",      // 1st: Accha Ji
+"https://reakno4741-cloud.github.io/Valentine-/Khatam.mp3",      // 2nd: Khatam  
+"https://reakno4741-cloud.github.io/Valentine-/emotional.mp3",   // 3rd: Emotional
+"https://reakno4741-cloud.github.io/Valentine-/sadmeow.mp3"      // 4th: Cat meow
 ];
+
+let currentNoAudio = null;
+let currentSoundIndex = 0;
+  
 const floatLayer = document.getElementById('floatLayer');
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
@@ -270,14 +274,27 @@ function moveNoButton(){
  noBtn.style.left=x+"px";
  noBtn.style.top=y+"px";
 }
+function stopCurrentNoSound() {
+  if (currentNoAudio) {
+    currentNoAudio.pause();
+    currentNoAudio.currentTime = 0;
+    currentNoAudio = null;
+  }
+}
 
 noBtn.onclick=(e)=>{
  e.preventDefault();
  
- // Play random no sound
- const randomSound = noSounds[Math.floor(Math.random() * noSounds.length)];
- const audio = new Audio(randomSound);
- audio.play().catch(()=>{});
+ // Stop current sound first
+ stopCurrentNoSound();
+ 
+ // Play next sound in sequence (1→2→3→4→1→...)
+ const soundUrl = noSounds[currentSoundIndex];
+ currentNoAudio = new Audio(soundUrl);
+ currentNoAudio.play().catch(()=>{});
+ 
+ // Move to next sound (loop back to 0 after 3)
+ currentSoundIndex = (currentSoundIndex + 1) % noSounds.length;
  
  moveNoButton();
 };
