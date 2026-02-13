@@ -204,7 +204,12 @@
   </div>
 
 <script>
-
+const noSounds = [
+"https://reakno4741-cloud.github.io/Valentine-/sadmeow.mp3",
+"https://reakno4741-cloud.github.io/Valentine-/Khatam.mp3",
+"https://reakno4741-cloud.github.io/Valentine-/emotional.mp3",
+"https://reakno4741-cloud.github.io/Valentine-/achaji.mp3"
+];
 const floatLayer = document.getElementById('floatLayer');
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
@@ -268,8 +273,15 @@ function moveNoButton(){
 
 noBtn.onclick=(e)=>{
  e.preventDefault();
+ 
+ // Play random no sound
+ const randomSound = noSounds[Math.floor(Math.random() * noSounds.length)];
+ const audio = new Audio(randomSound);
+ audio.play().catch(()=>{});
+ 
  moveNoButton();
 };
+
 
 spawnFloaties();
 
