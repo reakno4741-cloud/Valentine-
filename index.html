@@ -86,15 +86,14 @@
       line-height: 1.2;
     }
 
-    /* ✅ CHANGED: buttons now in one row */
+    /* ✅ FIXED: always one row */
     .cta {
       display: flex;
-      gap: 16px;
+      gap: 12px;
       flex-direction: row;
       justify-content: center;
       align-items: center;
       margin-top: 24px;
-      flex-wrap: wrap;
     }
 
     .btn {
@@ -102,10 +101,11 @@
       cursor: pointer;
       border-radius: 999px;
       font-weight: 800;
-      padding: 16px 40px;
+      padding: 14px 22px;
       font-size: 18px;
       transition: 0.2s;
-      max-width: 240px;
+      width: auto;
+      min-width: 120px;
     }
 
     .btn-primary {
@@ -170,7 +170,9 @@
 
     #noBtn {
       transition: 0.15s ease;
+      position: relative;
     }
+
   </style>
 </head>
 
@@ -178,7 +180,7 @@
   <div class="scene">
     <div class="float-layer" id="floatLayer"></div>
 
-    <div class="card">
+    <div class="card" id="card">
       <div id="askMode">
         <h1 id="valentineText">Will you be my valentine?</h1>
         <div class="cta">
@@ -191,10 +193,7 @@
         <h1>Yayyy! I Love You! ❤️</h1>
         <span class="teddy-center">🧸💖</span>
         <div class="meme-container">
-          <img 
-            src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
-            alt="Cute Love GIF"
-          />
+          <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif">
         </div>
 
         <div class="love-line">
@@ -205,74 +204,75 @@
   </div>
 
 <script>
+
 const floatLayer = document.getElementById('floatLayer');
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
+const card = document.getElementById('card');
+
 const askMode = document.getElementById('askMode');
 const yesMode = document.getElementById('yesMode');
 const valentineText = document.getElementById('valentineText');
 
-const FLOATIES = ['💖', '🌹', '🧸', '💝', '💗', '✨', '💕'];
+const FLOATIES = ['💖','🌹','🧸','💝','💗','✨','💕'];
 
 const params = new URLSearchParams(window.location.search);
 const nameFromUrl = params.get("name");
 
-if (nameFromUrl) {
-  const formattedName = decodeURIComponent(nameFromUrl);
-  const finalName = formattedName.charAt(0).toUpperCase() + formattedName.slice(1);
-  valentineText.innerText = `Hey ${finalName}, will you be my valentine?`;
+if(nameFromUrl){
+ const formattedName = decodeURIComponent(nameFromUrl);
+ const finalName = formattedName.charAt(0).toUpperCase()+formattedName.slice(1);
+ valentineText.innerText=`Hey ${finalName}, will you be my valentine?`;
 }
 
-function spawnFloaties() {
-  for (let i = 0; i < 40; i++) {
-    const el = document.createElement('div');
-    el.className = 'float';
-    el.textContent = FLOATIES[Math.floor(Math.random() * FLOATIES.length)];
-    el.style.left = Math.random() * 100 + '%';
-    el.style.setProperty('--dur', (Math.random() * 4 + 4) + 's');
-    el.style.setProperty('--tx', (Math.random() * 100 - 50) + 'px');
-    el.style.animationDelay = (Math.random() * 8) + 's';
-    floatLayer.appendChild(el);
-  }
+function spawnFloaties(){
+ for(let i=0;i<40;i++){
+  const el=document.createElement('div');
+  el.className='float';
+  el.textContent=FLOATIES[Math.floor(Math.random()*FLOATIES.length)];
+  el.style.left=Math.random()*100+'%';
+  el.style.setProperty('--dur',(Math.random()*4+4)+'s');
+  el.style.setProperty('--tx',(Math.random()*100-50)+'px');
+  el.style.animationDelay=(Math.random()*8)+'s';
+  floatLayer.appendChild(el);
+ }
 }
 
-yesBtn.addEventListener('click', () => {
-  askMode.style.display = 'none';
-  yesMode.style.display = 'block';
+yesBtn.onclick=()=>{
+ askMode.style.display='none';
+ yesMode.style.display='block';
 
-  const audio = new Audio("https://reakno4741-cloud.github.io/Valentine-/Ishq_Wala_Love.mp3");
-  audio.play().catch(() => {});
-});
+ const audio=new Audio("https://reakno4741-cloud.github.io/Valentine-/Ishq_Wala_Love.mp3");
+ audio.play().catch(()=>{});
+};
 
-/* ✅ FIXED: Never goes outside screen */
-function moveNoButton() {
+/* ✅ PERFECT FIX */
+function moveNoButton(){
 
-  const padding = 20;
+ const cardRect = card.getBoundingClientRect();
+ const btnWidth = noBtn.offsetWidth;
+ const btnHeight = noBtn.offsetHeight;
 
-  const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
+ const padding = 10;
 
-  const btnWidth = noBtn.offsetWidth;
-  const btnHeight = noBtn.offsetHeight;
+ const maxX = cardRect.width - btnWidth - padding;
+ const maxY = cardRect.height - btnHeight - padding;
 
-  const maxX = viewportWidth - btnWidth - padding;
-  const maxY = viewportHeight - btnHeight - padding;
+ const x = Math.random()*maxX;
+ const y = Math.random()*maxY;
 
-  const randomX = Math.max(padding, Math.random() * maxX);
-  const randomY = Math.max(padding, Math.random() * maxY);
-
-  noBtn.style.position = "fixed";
-  noBtn.style.left = randomX + "px";
-  noBtn.style.top = randomY + "px";
-  noBtn.style.zIndex = "9999";
+ noBtn.style.position="absolute";
+ noBtn.style.left=x+"px";
+ noBtn.style.top=y+"px";
 }
 
-noBtn.addEventListener("click", function(e) {
-  e.preventDefault();
-  moveNoButton();
-});
+noBtn.onclick=(e)=>{
+ e.preventDefault();
+ moveNoButton();
+};
 
 spawnFloaties();
+
 </script>
 
 </body>
