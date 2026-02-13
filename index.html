@@ -7,7 +7,7 @@
 
 <style>
 :root {
-  --bg-color: #ff4d6d;
+  --bg-color: linear-gradient(135deg, #ff4d6d, #8b0000, #000000);
   --card-bg: rgba(255, 117, 143, 0.92);
   --ink: #ffffff;
   --shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
@@ -28,19 +28,7 @@ body{
   align-items:center;
   justify-content:center;
   color:var(--ink);
-}
-
-/* ================= BACKGROUND GIF ================= */
-.background-gif{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  filter: brightness(0.7);
-  transform: scale(0.9); /* Zoom out slightly to show teddy face */
-  transform-origin: center center;
+  background: var(--bg-color);
 }
 
 /* ================= FLOATING EMOJIS ================= */
@@ -53,7 +41,7 @@ body{
 
 .float{
   position:absolute;
-  font-size:22px;
+  font-size:30px; /* Bigger emojis */
   opacity:0;
   animation:drift var(--dur) linear infinite;
 }
@@ -63,8 +51,8 @@ body{
     transform:translateY(-20vh) translateX(0) rotate(0deg);
     opacity:0;
   }
-  10%{ opacity:0.8; }
-  90%{ opacity:0.8; }
+  10%{ opacity:0.9; }
+  90%{ opacity:0.9; }
   100%{
     transform:translateY(110vh) translateX(var(--tx)) rotate(360deg);
     opacity:0;
@@ -186,9 +174,6 @@ h1{
 
 <div class="scene">
 
-  <!-- BACKGROUND GIF (zoomed out to show teddy face) -->
-  <img class="background-gif" src="https://media.giphy.com/media/rT7WPCciy8oETxLmUV/giphy.gif" alt="Romantic Background">
-
   <!-- FLOATING EMOJIS -->
   <div class="float-layer" id="floatLayer"></div>
 
@@ -249,11 +234,12 @@ if(nameFromUrl){
 }
 
 function spawnFloaties(){
- for(let i=0;i<40;i++){
+ for(let i=0;i<80;i++){ // Increase quantity
   const el=document.createElement('div');
   el.className='float';
   el.textContent=FLOATIES[Math.floor(Math.random()*FLOATIES.length)];
   el.style.left=Math.random()*100+'%';
+  el.style.fontSize = (20 + Math.random()*30) + 'px'; // Random larger size
   el.style.setProperty('--dur',(Math.random()*4+4)+'s');
   el.style.setProperty('--tx',(Math.random()*100-50)+'px');
   el.style.animationDelay=(Math.random()*8)+'s';
