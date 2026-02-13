@@ -1,241 +1,272 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
-  <title>Will You Be My Valentine?</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+<title>Will You Be My Valentine?</title>
 
-  <style>
-    :root {
-      --bg-color: #ff4d6d;
-      --card-bg: rgba(255, 117, 143, 0.9);
-      --ink: #ffffff;
-      --shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-    }
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html, body {
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-    }
-
-    body {
-      margin: 0;
-      color: var(--ink);
-      font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-      background: linear-gradient(180deg, #ff4d6d 0%, #c9184a 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .scene {
-      position: relative;
-      height: 100%;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-
-    .float-layer {
-      pointer-events: none;
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
-
-    .float {
-      position: absolute;
-      font-size: 20px;
-      opacity: 0;
-      animation: drift var(--dur) linear infinite;
-    }
-
-    @keyframes drift {
-      0% { transform: translateY(110vh) translateX(0) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.8; }
-      90% { opacity: 0.8; }
-      100% { transform: translateY(-20vh) translateX(var(--tx)) rotate(360deg); opacity: 0; }
-    }
-
-    .card {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 400px;
-      border-radius: 24px;
-      padding: 32px 24px;
-      background: var(--card-bg);
-      box-shadow: var(--shadow);
-      text-align: center;
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(10px);
-    }
-
-    h1 {
-      font-weight: 800;
-      font-size: clamp(28px, 8vw, 36px);
-      margin-bottom: 24px;
-      line-height: 1.2;
-    }
-
-    /* ✅ FIXED: always one row */
-    .cta {
-      display: flex;
-      gap: 12px;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      margin-top: 24px;
-    }
-
-    .btn {
-      border: 0;
-      cursor: pointer;
-      border-radius: 999px;
-      font-weight: 800;
-      padding: 14px 22px;
-      font-size: 18px;
-      transition: 0.2s;
-      width: auto;
-      min-width: 120px;
-    }
-
-    .btn-primary {
-      background: #ffffff;
-      color: #ff4d6d;
-    }
-
-    .btn-ghost {
-  background: #8b0000;   /* dark red */
-  color: white;
-  border: 2px solid #ffffff;
+<style>
+:root {
+  --bg-color: #ff4d6d;
+  --card-bg: rgba(255, 117, 143, 0.92);
+  --ink: #ffffff;
+  --shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
-    .yes-mode {
-      display: none;
-      animation: popIn 0.6s ease both;
-    }
+* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
-    @keyframes popIn {
-      0% { transform: scale(0.8); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
+html,body{
+  height:100%;
+  width:100%;
+  overflow:hidden;
+}
 
-    .meme-container {
-      width: 100%;
-      margin: 20px 0;
-      border-radius: 16px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.1);
-      min-height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:"Plus Jakarta Sans", system-ui, sans-serif;
+  background:linear-gradient(180deg,#ff4d6d 0%,#c9184a 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
-    .meme-container img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+/* ================= ROMANTIC BACKGROUND ================= */
 
-    .teddy-center {
-      font-size: 64px;
-      margin: 10px 0;
-      display: block;
-    }
+.romantic-bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+}
 
-    .love-line {
-      margin-top: 18px;
-      font-size: 18px;
-      font-weight: 600;
-      opacity: 0;
-      animation: fadeSlide 2s ease forwards;
-      animation-delay: 0.8s;
-      text-shadow: 0 0 10px rgba(255,255,255,0.6);
-    }
+.bg-gif{
+  position:absolute;
+  width:320px;
+  opacity:0.28;
+  filter:blur(1.5px);
+  animation:floatSoft 25s linear infinite;
+}
 
-    @keyframes fadeSlide {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
+/* Cute anime rain */
+.gif1{ top:0%; left:0%; }
 
-    #noBtn {
-      transition: 0.15s ease;
-      position: relative;
-    }
+/* Teddy hug */
+.gif2{ bottom:5%; right:5%; animation-delay:6s; }
 
-  </style>
+/* Romantic couple silhouette */
+.gif3{ top:40%; left:35%; animation-delay:12s; }
+
+@keyframes floatSoft{
+  0%{ transform:translateY(0px) scale(1); }
+  50%{ transform:translateY(-40px) scale(1.05); }
+  100%{ transform:translateY(0px) scale(1); }
+}
+
+/* ================= FLOATING EMOJIS (TOP → DOWN) ================= */
+
+.float-layer{
+  pointer-events:none;
+  position:absolute;
+  inset:0;
+  z-index:1;
+}
+
+.float{
+  position:absolute;
+  font-size:22px;
+  opacity:0;
+  animation:drift var(--dur) linear infinite;
+}
+
+@keyframes drift{
+  0%{
+    transform:translateY(-20vh) translateX(0) rotate(0deg);
+    opacity:0;
+  }
+  10%{ opacity:0.8; }
+  90%{ opacity:0.8; }
+  100%{
+    transform:translateY(110vh) translateX(var(--tx)) rotate(360deg);
+    opacity:0;
+  }
+}
+
+/* ================= CARD ================= */
+
+.scene{
+  position:relative;
+  height:100%;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+}
+
+.card{
+  position:relative;
+  z-index:2;
+  width:100%;
+  max-width:400px;
+  border-radius:24px;
+  padding:32px 24px;
+  background:var(--card-bg);
+  box-shadow:var(--shadow);
+  text-align:center;
+  border:2px solid rgba(255,255,255,0.4);
+  backdrop-filter:blur(10px);
+  animation:glowCard 3s ease-in-out infinite alternate;
+}
+
+@keyframes glowCard{
+  from{ box-shadow:0 0 20px rgba(255,255,255,0.3); }
+  to{ box-shadow:0 0 45px rgba(255,255,255,0.7); }
+}
+
+h1{
+  font-weight:800;
+  font-size:clamp(28px,8vw,36px);
+  margin-bottom:24px;
+  line-height:1.2;
+}
+
+.cta{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  margin-top:24px;
+}
+
+.btn{
+  border:0;
+  cursor:pointer;
+  border-radius:999px;
+  font-weight:800;
+  padding:14px 22px;
+  font-size:18px;
+  transition:0.2s;
+  min-width:120px;
+}
+
+.btn-primary{
+  background:#ffffff;
+  color:#ff4d6d;
+}
+
+.btn-ghost{
+  background:#8b0000;
+  color:white;
+  border:2px solid #ffffff;
+}
+
+.yes-mode{
+  display:none;
+  animation:popIn 0.6s ease both;
+}
+
+@keyframes popIn{
+  0%{ transform:scale(0.8); opacity:0; }
+  100%{ transform:scale(1); opacity:1; }
+}
+
+.meme-container{
+  width:100%;
+  margin:20px 0;
+  border-radius:16px;
+  overflow:hidden;
+  background:rgba(255,255,255,0.1);
+}
+
+.meme-container img{
+  width:100%;
+}
+
+.love-line{
+  margin-top:18px;
+  font-size:18px;
+  font-weight:600;
+  opacity:0;
+  animation:fadeSlide 2s ease forwards;
+  animation-delay:0.8s;
+}
+
+@keyframes fadeSlide{
+  0%{ opacity:0; transform:translateY(20px); }
+  100%{ opacity:1; transform:translateY(0); }
+}
+
+#noBtn{
+  transition:0.15s ease;
+  position:relative;
+}
+</style>
 </head>
 
 <body>
-  <div class="scene">
-    <div class="float-layer" id="floatLayer"></div>
 
-    <div class="card" id="card">
-      <div id="askMode">
-        <h1 id="valentineText">Will you be my valentine?</h1>
-        <div class="cta">
-          <button class="btn btn-primary" id="yesBtn">Yes! 💖</button>
-          <button class="btn btn-ghost" id="noBtn">No 💔</button>
-        </div>
+<div class="scene">
+
+  <!-- Romantic Background GIFs -->
+  <div class="romantic-bg">
+    <!-- Anime Rain Couple -->
+    <img src="https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif" class="bg-gif gif1">
+    <!-- Teddy Hug -->
+    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" class="bg-gif gif2">
+    <!-- Romantic Silhouette -->
+    <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" class="bg-gif gif3">
+  </div>
+
+  <div class="float-layer" id="floatLayer"></div>
+
+  <div class="card" id="card">
+    <div id="askMode">
+      <h1 id="valentineText">Will you be my valentine?</h1>
+      <div class="cta">
+        <button class="btn btn-primary" id="yesBtn">Yes! 💖</button>
+        <button class="btn btn-ghost" id="noBtn">No 💔</button>
       </div>
+    </div>
 
-      <div class="yes-mode" id="yesMode">
-        <h1>Yayyy! I Love You! ❤️</h1>
-        <span class="teddy-center">🧸💖</span>
-        <div class="meme-container">
-          <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif">
-        </div>
-
-        <div class="love-line">
-          You're my everything now ♡
-        </div>
+    <div class="yes-mode" id="yesMode">
+      <h1>Yayyy! I Love You! ❤️</h1>
+      <div class="meme-container">
+        <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif">
+      </div>
+      <div class="love-line">
+        You're my everything now ♡
       </div>
     </div>
   </div>
 
+</div>
+
 <script>
+
+/* ===== YOUR ORIGINAL MUSIC SYSTEM KEPT ===== */
+
 const noSounds = [
-"https://reakno4741-cloud.github.io/Valentine-/nooo.mp3" ,
-"https://reakno4741-cloud.github.io/Valentine-/achaji.mp3",      // 1st: Accha Ji
-"https://reakno4741-cloud.github.io/Valentine-/sadviolin.mp3" ,
-"https://reakno4741-cloud.github.io/Valentine-/Khatam.mp3",      // 2nd: Khatam  
-"https://reakno4741-cloud.github.io/Valentine-/emotional.mp3",   // 3rd: Emotional
-"https://reakno4741-cloud.github.io/Valentine-/sadmeow.mp3",      // 4th: Cat meow
+"https://reakno4741-cloud.github.io/Valentine-/nooo.mp3",
+"https://reakno4741-cloud.github.io/Valentine-/achaji.mp3",
+"https://reakno4741-cloud.github.io/Valentine-/sadviolin.mp3",
+"https://reakno4741-cloud.github.io/Valentine-/Khatam.mp3",
+"https://reakno4741-cloud.github.io/Valentine-/emotional.mp3",
+"https://reakno4741-cloud.github.io/Valentine-/sadmeow.mp3",
 "https://reakno4741-cloud.github.io/Valentine-/music.mp3"
 ];
 
 let currentNoAudio = null;
 let currentSoundIndex = 0;
-  
-const floatLayer = document.getElementById('floatLayer');
-const yesBtn = document.getElementById('yesBtn');
-const noBtn = document.getElementById('noBtn');
-const card = document.getElementById('card');
 
-const askMode = document.getElementById('askMode');
-const yesMode = document.getElementById('yesMode');
-const valentineText = document.getElementById('valentineText');
+const floatLayer=document.getElementById('floatLayer');
+const yesBtn=document.getElementById('yesBtn');
+const noBtn=document.getElementById('noBtn');
+const card=document.getElementById('card');
+const askMode=document.getElementById('askMode');
+const yesMode=document.getElementById('yesMode');
+const valentineText=document.getElementById('valentineText');
 
-const FLOATIES = ['💖','🌹','🧸','💝','💗','✨','💕'];
-
-const params = new URLSearchParams(window.location.search);
-const nameFromUrl = params.get("name");
-
-if(nameFromUrl){
- const formattedName = decodeURIComponent(nameFromUrl);
- const finalName = formattedName.charAt(0).toUpperCase()+formattedName.slice(1);
- valentineText.innerText=`Hey ${finalName}, will you be my valentine?`;
-}
+const FLOATIES=['💖','🌹','🧸','💝','💗','✨','💕'];
 
 function spawnFloaties(){
  for(let i=0;i<40;i++){
@@ -250,8 +281,16 @@ function spawnFloaties(){
  }
 }
 
+function stopCurrentNoSound(){
+ if(currentNoAudio){
+   currentNoAudio.pause();
+   currentNoAudio.currentTime=0;
+   currentNoAudio=null;
+ }
+}
+
 yesBtn.onclick=()=>{
-   stopCurrentNoSound();
+ stopCurrentNoSound();
  askMode.style.display='none';
  yesMode.style.display='block';
 
@@ -259,50 +298,28 @@ yesBtn.onclick=()=>{
  audio.play().catch(()=>{});
 };
 
-/* ✅ PERFECT FIX */
 function moveNoButton(){
-
- const cardRect = card.getBoundingClientRect();
- const btnWidth = noBtn.offsetWidth;
- const btnHeight = noBtn.offsetHeight;
-
- const padding = 10;
-
- const maxX = cardRect.width - btnWidth - padding;
- const maxY = cardRect.height - btnHeight - padding;
-
- const x = Math.random()*maxX;
- const y = Math.random()*maxY;
-
+ const cardRect=card.getBoundingClientRect();
+ const btnWidth=noBtn.offsetWidth;
+ const btnHeight=noBtn.offsetHeight;
+ const maxX=cardRect.width-btnWidth-10;
+ const maxY=cardRect.height-btnHeight-10;
  noBtn.style.position="absolute";
- noBtn.style.left=x+"px";
- noBtn.style.top=y+"px";
-}
-function stopCurrentNoSound() {
-  if (currentNoAudio) {
-    currentNoAudio.pause();
-    currentNoAudio.currentTime = 0;
-    currentNoAudio = null;
-  }
+ noBtn.style.left=Math.random()*maxX+"px";
+ noBtn.style.top=Math.random()*maxY+"px";
 }
 
 noBtn.onclick=(e)=>{
  e.preventDefault();
- 
- // Stop current sound first
  stopCurrentNoSound();
- 
- // Play next sound in sequence (1→2→3→4→1→...)
- const soundUrl = noSounds[currentSoundIndex];
- currentNoAudio = new Audio(soundUrl);
+
+ const soundUrl=noSounds[currentSoundIndex];
+ currentNoAudio=new Audio(soundUrl);
  currentNoAudio.play().catch(()=>{});
- 
- // Move to next sound (loop back to 0 after 3)
- currentSoundIndex = (currentSoundIndex + 1) % noSounds.length;
- 
+ currentSoundIndex=(currentSoundIndex+1)%noSounds.length;
+
  moveNoButton();
 };
-
 
 spawnFloaties();
 
