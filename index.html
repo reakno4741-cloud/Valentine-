@@ -39,6 +39,8 @@ body{
   height:100%;
   object-fit:cover;
   filter: brightness(0.7);
+  transform: scale(0.9); /* Zoom out slightly to show teddy face */
+  transform-origin: center center;
 }
 
 /* ================= FLOATING EMOJIS ================= */
@@ -184,7 +186,7 @@ h1{
 
 <div class="scene">
 
-  <!-- BACKGROUND GIF -->
+  <!-- BACKGROUND GIF (zoomed out to show teddy face) -->
   <img class="background-gif" src="https://media.giphy.com/media/rT7WPCciy8oETxLmUV/giphy.gif" alt="Romantic Background">
 
   <!-- FLOATING EMOJIS -->
@@ -266,9 +268,6 @@ yesBtn.onclick=()=>{
 
    const audio=new Audio("https://reakno4741-cloud.github.io/Valentine-/Ishq_Wala_Love.mp3");
    audio.play().catch(()=>{});
-
-   // Simple confirmation popup
-   alert("You said YES! 💖");
 };
 
 function moveNoButton(){
