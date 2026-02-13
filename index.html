@@ -212,13 +212,14 @@ const valentineText = document.getElementById('valentineText');
 
 const FLOATIES = ['💖', '🌹', '🧸', '💝', '💗', '✨', '💕'];
 
-/* URL name logic */
-const pathParts = window.location.pathname.split('/').filter(Boolean);
-const nameFromUrl = pathParts[pathParts.length - 1];
+/* ✅ Get name from query string */
+const params = new URLSearchParams(window.location.search);
+const nameFromUrl = params.get("name");
 
 if (nameFromUrl) {
   const formattedName = decodeURIComponent(nameFromUrl);
-  valentineText.innerText = `Hey ${formattedName} will you be my valentine?`;
+  const finalName = formattedName.charAt(0).toUpperCase() + formattedName.slice(1);
+  valentineText.innerText = `Hey ${finalName}, will you be my valentine?`;
 }
 
 /* Floating hearts */
@@ -244,10 +245,9 @@ yesBtn.addEventListener('click', () => {
   audio.play().catch(() => {});
 });
 
-/* Mobile-safe No button movement */
+/* Mobile-safe No movement */
 function moveNoButton() {
   const padding = 10;
-
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
 
@@ -266,7 +266,6 @@ function moveNoButton() {
   noBtn.style.zIndex = '9999';
 }
 
-/* Move only on click */
 noBtn.addEventListener('click', function(e) {
   e.preventDefault();
   moveNoButton();
